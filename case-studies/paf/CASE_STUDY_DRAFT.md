@@ -2,7 +2,7 @@
 
 ## A practical workbench for planning, coordinating and verifying multi-slice development
 
-**Systems Atlas | Engineering case study | Editorial draft 0.2 | 10 November 2026**
+**Systems Atlas | Engineering case study | Editorial draft 0.3 | 10 November 2026**
 
 **Project:** Personal AI Agent Framework (PAF)  
 **Area:** AI-assisted engineering, developer tooling, specification, verification, autonomous workflows  
@@ -63,59 +63,71 @@ The answer was to preserve the useful deterministic core while making new develo
 
 That is the most important architectural evolution: *less framework machinery, more reusable engineering discipline*.
 
-### One end-to-end pilot: Circuit Lab
+### In a substantial application: Birria Radar
 
-The first formally documented end-to-end pilot was **Circuit Lab**, a small browser game where players rotate circuit components to route power to receivers.
+The clearest illustration of PAF's practical use is not a standalone demonstration game. It is the ongoing development of **Birria Radar**, a real owner-facing lead-discovery application for a mobile catering business.
 
-The game had a defined twenty-level campaign, a pure TypeScript simulation engine, explicit rules for propagation and logic gates, negative test cases, and a dependency-aware build plan. PAF guidance was available in the target repo; a native Cursor Project acted as the running coordinator.
+The product already existed. The engineering challenge was to integrate a more capable research and qualification process into the established FastAPI/SQLite application **without** disrupting the owner's existing data, evidence reviews or contact decisions.
 
-Across six merged implementation PRs, Circuit Lab progressed from its first four playable wire puzzles to branching and multiple receivers, switches, diodes, AND/OR gates, twenty authored levels, save-state handling, responsive layouts and opt-in sound.
+The Discovery Integration programme was prepared through the PAF planning method. Twelve explicit requirements, each with acceptance and negative scenarios, were organised into four dependent work packages:
 
-The final reported automated checks were strong:
+1. **DI-01 — Durable runs:** create and identify a research run before calling paid providers, enforce idempotency, reserve shared daily search and AI budgets, and avoid blindly repeating an uncertain chargeable call.
+2. **DI-02 — Persistent candidate ledger:** retain acquired and deferred subjects beyond ephemeral research results, separate unknown from unsuitable, and preserve owner decisions and identity.
+3. **DI-03 — Shared coordination:** unify manual and scheduled discovery under leases, existing quotas and backlog gates, with scheduling opt-in and no unauthorised spend.
+4. **DI-04 — Owner decision flow:** surface a small daily review queue, protect Save/Dismiss state, check current publisher evidence and provide an unsent, owner-controlled contact handoff.
 
-| Verified project measure | Recorded result |
-| --- | ---: |
-| Implemented and merged development slices | **6** |
-| Authored levels, each with a solution witness | **20** |
-| Unit tests passing | **237 / 237** |
-| Chromium end-to-end tests passing | **52 / 52** |
-| Typecheck and static build | **Passed** |
+This decomposition mattered. Each slice established necessary foundations for the next, while the project-owned specification prevented a later implementation from treating a search hit as an approved opportunity or quietly sending an email.
 
-The owner reported a positive initial playtest. The final verification report nevertheless retained separate owner-only checks for a full twenty-level walkthrough, hint quality, screen-reader feel, narrow-phone appearance and sound. These automated results are not a commercial release or a completed human acceptance certificate.
+The four corresponding implementation pull requests **#28–#31** were merged into the target repository. The final DI-04 record reported **445 passing local tests and six skipped**, with zero unresolved HIGH/MEDIUM findings in its recorded fresh review. It also documents specific review repairs: durable query-quantity reservations, safe treatment of ledger persistence failure and a current-source attestation check that does not trust stale approval flags.
 
-This was a meaningful practical demonstration: a complete small product was developed through a reviewed, sequential programme rather than six unrelated agent prompts. It is **not** a controlled experiment showing that PAF alone caused the result; native Cursor provided the actual coordination.
+The reported suite establishes significant local implementation and review coverage. It does **not** by itself establish hosted, real-provider or final owner acceptance. Those remained separate evidence tiers.
 
-### Value beyond the recorded game pilot
+For me, this is the more revealing example of PAF: a substantial change to an existing product was converted from a broad intention into discrete, bounded engineering work with traceable decisions, coordinated implementation and review. It demonstrates the workflow at the scale that actually makes it useful.
 
-Circuit Lab is the one deliberately documented end-to-end PAF pilot, but it is not the only project where I have used the method.
+### The dedicated end-to-end evaluation: Circuit Lab
 
-I've since used PAF's planning contracts and multi-slice development approach on a number of other personal engineering projects. **In day-to-day use, it has substantially streamlined the progression from an agreed idea to coherent implementation work.** Instead of repeatedly reconstructing scope for every agent session, the project documents and implementation stages provide continuity.
+Circuit Lab remains valuable, but for a different reason. It was the first deliberately documented end-to-end PAF pilot under a native Cursor Project coordinator, using six dependent development slices to build a browser game with twenty authored puzzles.
 
-That's an important part of the project's value, even though I haven't run a controlled multi-project comparison or calculated a reliable percentage speed-up. It is a practitioner assessment grounded in repeated use, not an invented benchmark.
+The final report recorded **237/237 unit tests**, **52/52 Chromium end-to-end tests**, a passing typecheck/build and executable solution witnesses for all twenty levels. A positive early owner playtest was reported, while full owner-only usability, phone, sound and screen-reader checks remained open.
 
-### Learning from the real review process
+That is a genuine, bounded verification milestone, not evidence that PAF alone caused a productivity gain. Cursor provided the active running coordinator and PAF supplied project-scoped contracts, skills and review practices. The pilot revealed practical issues that improved the workbench, including how to distinguish a reviewer preference from an actual specification defect and when a high-risk repair deserves fresh final-head review.
 
-The pilot also produced concrete lessons that improved the workbench.
+### Practical value across projects
 
-**Review caught genuine defects.** Fresh-context review identified an off-board validation gap, a logic-route problem and a high-severity stored-audio-preference issue. Focused fixes and regression tests followed. Review demonstrated its practical worth by challenging actual behaviour, not by providing ceremony.
+The dedicated Circuit Lab evaluation and the Birria Radar integration are different kinds of evidence. Neither captures the full reason I continue to use the framework.
 
-**Review was not always right.** One agent objected to repeating a branching mechanic in Level 6 even though the accepted design expressly required it. A separate instructional sentence misstated a receiver position and really did need correction. PAF's revised review policy now distinguishes an objective contract defect from an optional design preference, preventing unproductive escalation.
+I've used PAF's planning contracts and multi-slice process on several other personal projects. **In day-to-day use, the approach has substantially streamlined the progression from an exploratory discussion to coherent implementation work.** It is particularly helpful when a project spans multiple dependent phases or sessions, or when the software must preserve operational safeguards while evolving quickly.
 
-**The final changed code matters.** Certain high/medium-risk repairs passed tests without a separately recorded independent review of the new risky delta. The later procedure recommends inspecting the actual repaired head, the counterexample and affected tests, proportionately rather than re-reviewing everything after each small copy edit.
+In AI Conversation Lab, for example, the repo contains PAF-derived project requirements, stage-specific tasks, an explicit human evaluation protocol and boundaries on external model spend. Later Birria Radar programmes use the same contract-driven approach for market discovery and proactive inventory. Those examples show wider method adoption; their planning documents are not proof that every proposed phase has been implemented or accepted.
 
-**Workflow overhead should be challenged.** Several administrative closeout PRs and stale entrypoint docs created avoidable noise. PAF now emphasises keeping one authoritative task ledger and reconciling current project documentation at sensible programme boundaries.
+This is practitioner evidence, not a benchmark or a percentage productivity claim. The significant point is that PAF has become a reusable working method rather than a framework created only to pass its own tests.
 
-**Unobservable costs must remain unknown.** Actual token usage, model routing and PAF-specific cost overhead were not reliably available from GitHub. The method now asks for observable usage rather than inventing savings or attributing an approximate cost to the framework.
+### Review and recovery in actual development
 
-The response to each issue was a contained improvement to existing skills and SOPs, not a new infrastructure layer.
+Reliability is most tangible when a review catches something consequential or a running programme encounters a difficult state.
+
+**Birria Radar's paid-call boundary was hardened.** A high-risk review identified a weakness in the reservation of Serper query allowance. The resulting change made quantity reservation durable before provider calls and added interruption, restart and near-limit tests. The objective was not more process; it was to prevent an expensive ambiguity in production-shaped code.
+
+**Persistent state was treated as an invariant.** The DI candidate-ledger review identified a path that could report a completed run despite ledger persistence failure. A bounded repair changed the outcome to partial/failed with an explicit reason, preserving the difference between known success and incomplete work.
+
+**Evidence was tied to the current publisher.** DI-04 tightened the owner's source-attestation check so that an earlier approval flag could not promote a changed source route to verified status. The change preserved manual source review and unsent communication authority.
+
+**Circuit Lab uncovered procedural improvement opportunities.** Fresh review identified real defects, including a saved-audio-preference issue, but one reviewer also incorrectly challenged a Level 6 mechanic already approved in the design contract. PAF's later review procedure distinguishes objective failures from preferences. It also calls for proportionate final-head inspection after risky repairs and discourages repetitive housekeeping PRs.
+
+The important lesson is that the framework should improve engineering judgement and evidence without becoming a second product to maintain. Difficult findings should lead to smaller, sharper contracts and procedures, not automatically to more infrastructure.
 
 ### What the evidence establishes
 
-PAF has two complementary forms of documented positive evidence: a restricted synthetic evaluation demonstrating selected fail-closed checks, and a real six-slice application build demonstrating a functional project-first development workflow.
+PAF has several complementary forms of positive evidence:
 
-Beyond those records, I regard its planning and staged delivery method as highly valuable in my own work across projects. That experience is legitimate, but it is a different kind of evidence from a measured causal comparison.
+- A controlled synthetic evaluation demonstrated specific fail-closed checks under restricted conditions, with an **ADOPT_FOR_CONTROLLED_USE** outcome.
+- The dedicated Circuit Lab pilot demonstrated a six-slice implementation programme reaching a locally verified twenty-level application under native Cursor coordination.
+- Birria Radar's four-slice Discovery Integration demonstrates substantial use of the planning-and-implementation method in an existing application, with recorded PRs, real review repairs and a 445-passing-test local report.
+- Further personal projects demonstrate that the planning contract has become part of my ongoing engineering practice.
 
-It would be inaccurate to claim universal agent portability, a known PAF-versus-native-Cursor performance benefit, trustworthy hosted CI for the earlier evaluation, or precise cost savings. **Those are boundaries on the claims, not reasons to discount what the framework already enables.**
+These are meaningful results, but different proof tiers. There is no controlled calculation of PAF's improvement relative to native Cursor alone, no verified percentage time saving, no general portability guarantee and no claim that local tests stand in for hosted or owner acceptance.
+
+**Those distinctions limit the claims, not the practical utility of the framework.**
 
 ### What I've taken from it
 
@@ -125,21 +137,24 @@ The developer retains ownership of requirements and material decisions. The repo
 
 PAF is useful because it lets me spend more time thinking about the product and less time acting as a relay between agents. Its evolution has been about **making ambitious AI-assisted engineering easier to direct, review and resume**.
 
-### Systems Atlas: Inside an Autonomous Build
+### Systems Atlas: From intent to implementation
 
-The accompanying interactive exhibit makes this workflow tangible rather than displaying a conventional agent-flow diagram.
+The portfolio exhibit follows **Birria Radar's Discovery Integration**, not the smaller Circuit Lab demonstration. A visitor can read it from top to bottom: define the real product problem, see how twelve requirements became four dependent work packages, select a slice to inspect the actual engineering change and review evidence, and finish with the boundaries of its reported verification.
 
-Visitors begin with the original Circuit Lab idea, trace a real requirement into specifications and acceptance, inspect the workbench's skills and authority boundaries, travel through six documented implementation slices, and investigate the difference between a genuine defect and an unsupported review preference. The final stage exposes the reported results and their remaining limits.
+A secondary, optional section explains the planning contracts, six native skills, project authority and deterministic safeguards. Circuit Lab is retained as the dedicated pilot alongside other evidence of practical framework use.
 
-The interactions are labelled documentary reconstructions and illustrative models. They do not execute live agents, expose private source code or claim to be runtime telemetry.
+The interactive details are editorial reconstructions grounded in private repository records. They are not live agents, actual project telemetry or publicly exposed private source files.
 
 ---
 
 ## Editorial evidence and publication notes (remove from the public-facing article)
 
-**Status:** v0.2 editorial draft, reviewed against the selected GitHub source documents on 10 November 2026. No new PAF test, paid agent run, Circuit Lab full owner acceptance or independent benchmarking was conducted for this revision.
+**Status:** v0.3 editorial draft, reviewed against the selected GitHub source documents on 10 November 2026. No new PAF test, paid agent run, Circuit Lab full owner acceptance or independent benchmarking was conducted for this revision.
 
 **Primary private-source records:**
+- [Birria Radar Discovery Integration programme](https://github.com/D4V1DW/birria-radar/blob/main/docs/programmes/discovery-integration/README.md), [twelve requirements](https://github.com/D4V1DW/birria-radar/blob/main/docs/programmes/discovery-integration/PRODUCT_SPEC.md), [acceptance matrix](https://github.com/D4V1DW/birria-radar/blob/main/docs/programmes/discovery-integration/ACCEPTANCE.md) and [build plan](https://github.com/D4V1DW/birria-radar/blob/main/docs/programmes/discovery-integration/BUILD_PLAN.md)
+- Birria Radar implementation PRs [#28](https://github.com/D4V1DW/birria-radar/pull/28), [#29](https://github.com/D4V1DW/birria-radar/pull/29), [#30](https://github.com/D4V1DW/birria-radar/pull/30), [#31](https://github.com/D4V1DW/birria-radar/pull/31)
+- [AI Conversation Lab planning readiness](https://github.com/D4V1DW/ai-conversation-lab/blob/main/docs/PLANNING_READINESS.md) and [Birria Radar market-discovery planning PR #40](https://github.com/D4V1DW/birria-radar/pull/40)
 - [PAF README / implementation status](https://github.com/D4V1DW/agent-framework/blob/main/README.md)
 - [Original PAF architecture/specification](https://github.com/D4V1DW/agent-framework/blob/main/PERSONAL_AI_AGENT_FRAMEWORK_SPEC.md)
 - [Controlled evaluation results](https://github.com/D4V1DW/agent-framework/blob/main/docs/PAF-GOOD-ENOUGH-RESULTS.md) and [Pass A hardening PR #15](https://github.com/D4V1DW/agent-framework/pull/15)
