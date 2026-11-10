@@ -1,174 +1,151 @@
-# PAF: Engineering a More Reliable Way to Build Software with AI Agents
+# PAF: Turning Ideas into Reliable Software with AI Agents
 
-## From deterministic guardrails to a practical, project-first development workbench
+## A practical workbench for planning, coordinating and verifying multi-slice development
 
-**Systems Atlas | Engineering case study | Editorial draft 0.1 | 10 November 2026**
+**Systems Atlas | Engineering case study | Editorial draft 0.2 | 10 November 2026**
 
 **Project:** Personal AI Agent Framework (PAF)  
-**Area:** AI-assisted software engineering · agent workflows · specification and verification · developer tooling  
-**Implementation:** Python standard-library CLI and tests (preserved v0.4.3); Markdown-native agent skills, engineering procedures and knowledge base (vNext); Git/GitHub and Cursor Projects as execution environment  
-**Evidence level:** Controlled synthetic evaluation and an observed multi-PR pilot; no claim of measurable superiority over native Cursor, verified cross-agent portability or trusted hosted CI  
-**Role/attribution:** Personal project directed through AI-assisted engineering. Exact personal implementation and architectural contribution wording requires owner review before public publication.
+**Area:** AI-assisted engineering, developer tooling, specification, verification, autonomous workflows  
+**Implementation:** Preserved Python 0.4.3 deterministic CLI; Markdown-native agent skills, SOPs, planning contract and knowledge base; Git/GitHub and Cursor as the execution environment  
+**Evidence:** One formally documented end-to-end Circuit Lab pilot, a controlled synthetic evaluation, and qualitative experience using PAF across additional personal projects  
+**Attribution:** Personal project directed through AI-assisted engineering. Exact individual implementation and architectural contribution wording awaits a later editorial review.
 
-> **Central question:** How do you give coding agents enough autonomy to deliver useful software without making the developer repeatedly explain requirements, approve routine steps or trust unverified claims of completion?
+> **The central question:** How can a developer turn a complex product idea into a series of well-specified, reviewed and tested AI-assisted implementation slices, without manually coordinating every routine handoff?
 
-### The problem was not generating code
+### The opportunity: from fast coding to dependable delivery
 
-AI coding agents made it possible for me to explore and build software much more quickly. But more generated code did not automatically mean more reliable engineering.
+AI coding agents can produce useful software at remarkable speed. I wanted to make that capability repeatable: start with an idea, work through its real product decisions, and then let a coding-agent workflow implement it in bounded stages while preserving the original intent.
 
-The recurring difficulty was continuity: carrying a product idea from a lengthy discussion into precise technical requirements, then into implementation, review and acceptance without losing important decisions along the way.
+The obstacle wasn't simply generating enough code. A new agent might not have the conversation that shaped a feature. A reviewer could challenge something the owner had deliberately specified. A test result could describe an old revision rather than the code about to merge. A task marked ready might be mistaken for permission to deploy or spend money.
 
-A new agent might not have the conversation that shaped a design. A reviewer could recommend a change that contradicted an already-approved requirement. A successful test run could be reported for a previous commit rather than the code actually being merged. And a task described as *ready* could be mistaken for authority to deploy, merge or spend money.
+PAF gives that process a practical structure. **Product decisions become durable contracts; agents get focused engineering guidance; implementation and review advance through explicit authority and evidence.** In my own development work, the planning contracts and multi-slice approach have become particularly valuable. They have made complex projects easier to coordinate without repeated explanation and manual handoffs.
 
-These are not primarily prompt-writing problems. They are problems of **authority, evidence and the handoff between human judgment and automated work**.
+### Begin upstream: turn discussion into a build contract
 
-PAF began as an attempt to address them across independent projects.
+The most important part of the current framework happens *before* the coding agent starts.
 
-### First approach: make the critical checks deterministic
+PAF's planning contract turns a substantive product conversation into repository-owned source-of-truth documents. For a multi-feature application, these include an explicit product brief, user-visible requirements, technical interfaces, architectural decisions, dependency-aware work packages, an acceptance matrix, a short agent entrypoint and an owner-review readiness record.
 
-The original framework, preserved as version **0.4.3**, used a Python command-line layer alongside repository policies, routing rules, context packs and versioned installation metadata.
+The process distinguishes decisions already made from assumptions, unresolved material questions and reversible engineering choices. Requirements refer to observable behaviours and important negative cases. Task briefs reference those requirements instead of making up a second, sometimes contradictory specification. A fresh coding agent should be able to select the next authorised task from the repository without asking the owner to reconstruct the original conversation.
 
-The intention was to put repeatable checks in software rather than rely on an AI model to remember every constraint. Before an approved task could be considered executable, the tooling could inspect lifecycle state, installed-framework integrity, permissions and declared side effects. Evidence checks could distinguish a matching PR/head reference from an outdated one, and failed tests from successful ones.
+This is deliberately not a mandatory paperwork exercise for every initial idea. Exploration stays conversational. Formal planning begins when the user decides a project is worth implementing, and the documents are sized to the actual work.
 
-The important distinction was between **structural verification** and **genuine authorisation**. A local script can establish that a task record is well formed and that a referenced commit matches. It cannot invent a human approval, prove a hosted CI run occurred or make a sensitive action safe simply because a model says it is.
+### Give agents the right expertise at the right point
 
-A bounded stabilisation pass found and repaired concrete fail-open behaviours, including a deleted installation lock file and unsupported or blank task states being able to bypass the intended readiness constraints.
+The current skills-first workbench is centred on **six native, on-demand agent skills**:
 
-The controlled synthetic evaluation later reported the decision **ADOPT_FOR_CONTROLLED_USE**. Ordinary coding tasks succeeded under both native and PAF-assisted configurations. The PAF combination added explicit denial behaviour for selected held, privileged and stale-evidence cases.
+- **Plan and specify:** reconcile product decisions into implementable requirements, tasks and acceptance.
+- **Coordinate an approved build:** check the finite grant, GitHub state and dependencies before progressing work.
+- **Implement a vertical slice:** make one complete, bounded change with meaningful negative and regression tests.
+- **Review and repair:** challenge the effective code diff against an agreed contract, not just the PR summary.
+- **Diagnose and recover:** reconstruct the exact state of interrupted work before retrying or continuing.
+- **Curate learning:** save genuinely reusable engineering lessons with provenance, applicability and limits.
 
-That is a useful finding, but a narrow one. It did **not** establish that PAF made every coding agent more capable, faster or cheaper. Hosted CI was unavailable; the tests were local or synthetic; cross-client compatibility was not established. The framework had shown specific safeguards, not universal reliability.
+Focused SOPs and a small knowledge index support those skills. An agent can retrieve a relevant technique for test selection, review, debugging or specification without loading a large generic prompt on every request.
 
-### The uncomfortable question: had the framework become part of the problem?
+PAF does not try to replace the developer's entire environment. **Cursor Projects supplies the running coordination. The target project owns its requirements. GitHub owns PR and merge evidence. PAF contributes the planning, skills, review principles and continuity discipline.** This distinction is central to why the newer workbench is easier to use.
 
-As the original system grew, it accumulated the kind of machinery it was meant to avoid: installation rules, state contracts, routers, validation commands, context-pack distribution and ongoing maintenance obligations.
+### Keep the safeguards that software can verify
 
-Meanwhile, the actual day-to-day need was clearer. I wanted to discuss an idea, decide what it should do, hand the implementation to coding agents and have the work progress through reviewed, tested increments without constant intervention.
+PAF originally began as a more formal, versioned, tool-neutral framework. The preserved **0.4.3** implementation includes a Python CLI with installation integrity, lifecycle/readiness, permission and evidence checks.
 
-Building a second orchestration platform would not necessarily improve that experience. Cursor already offered native agent and project coordination capabilities. PAF would be more useful if it supplied the **missing engineering discipline around those capabilities**, rather than attempted to replace them.
+Those checks addressed genuine failure modes. A controlled stabilisation pass found that missing installation-lock information and blank or unsupported task states could bypass expected fail-closed behaviour; the code was repaired and given regression coverage. The subsequent synthetic comparison reported **ADOPT_FOR_CONTROLLED_USE** for its restricted local scope, including hard denials for selected held, privileged and stale-evidence cases.
 
-This led to a deliberate architectural change: preserve the working deterministic core, but move new development toward a lighter, skills-led workbench.
+The important design distinction is that a deterministic script can check structural facts but cannot invent human authorisation or pretend hosted CI ran. The original core retained value on those terms. It simply did not need to grow into a second universal orchestration platform.
 
-### Start before the coding agent starts
+### A useful simplification, not a change of ambition
 
-The key design decision was to move the most important handoff **upstream**.
+As native agent tooling developed, PAF's direction shifted. Installation metadata, routers, context packs and formal task schemas had begun to occupy more of the maintenance surface than the everyday workflow needed.
 
-Instead of expecting a new coding agent to reconstruct product decisions from a long chat, PAF's planning contract turns agreed decisions into repository-owned authority:
+The question became: **what genuinely helps a developer ship better work, and what should be left to existing tools?**
 
-**Discovery conversation → reviewed product and technical specifications → bounded work packages → acceptance scenarios → separately authorised implementation.**
+The answer was to preserve the useful deterministic core while making new development project-first and skills-led. An approved project plan, a finite execution grant, targeted review and a reliable handoff mattered more than building another daemon or task database. The framework could stay small while the projects built with it became larger.
 
-That does not mean turning every early idea into bureaucratic documents. Exploration remains conversational. Formal documentation begins when a project is ready to move into development.
+That is the most important architectural evolution: *less framework machinery, more reusable engineering discipline*.
 
-The planning process distinguishes decisions the owner has made from assumptions, rejected alternatives and unresolved material questions. It defines user-visible behaviour, failure modes, permissions and boundaries before those choices are delegated to a coding agent.
+### One end-to-end pilot: Circuit Lab
 
-The resulting project repository becomes the durable source of truth. Task briefs link to requirement IDs; tests link to expected behaviour; the build plan tracks dependencies and holds; the agent entrypoint tells a fresh worker where to look. A previous ChatGPT conversation should not be required to continue an approved task.
+The first formally documented end-to-end pilot was **Circuit Lab**, a small browser game where players rotate circuit components to route power to receivers.
 
-For cloud-based or project-first execution, required skills must actually be present in the target workspace. A reference to another private repository is not proof that an agent can read those files.
+The game had a defined twenty-level campaign, a pure TypeScript simulation engine, explicit rules for propagation and logic gates, negative test cases, and a dependency-aware build plan. PAF guidance was available in the target repo; a native Cursor Project acted as the running coordinator.
 
-### A workbench built from six focused skills
+Across six merged implementation PRs, Circuit Lab progressed from its first four playable wire puzzles to branching and multiple receivers, switches, diodes, AND/OR gates, twenty authored levels, save-state handling, responsive layouts and opt-in sound.
 
-The revised PAF workbench contains six native, on-demand skills:
+The final reported automated checks were strong:
 
-| Skill | Responsibility |
-| --- | --- |
-| Plan and specify | Convert an agreed product idea into coherent requirements, tasks and verifiable acceptance |
-| Coordinate an approved build | Select eligible work, respect dependency and permission boundaries, and advance only within a finite owner grant |
-| Implement a vertical slice | Deliver a bounded change with meaningful tests, negative cases and evidence |
-| Review and repair | Challenge the actual effective diff against requirements, including counterexamples and test quality |
-| Diagnose and recover | Reconstruct reliable state after interruption or uncertain failure without dangerous blind retries |
-| Curate learning | Capture a genuinely reusable lesson with provenance, limits and later retrieval |
+| Verified project measure | Recorded result |
+| --- | ---: |
+| Implemented and merged development slices | **6** |
+| Authored levels, each with a solution witness | **20** |
+| Unit tests passing | **237 / 237** |
+| Chromium end-to-end tests passing | **52 / 52** |
+| Typecheck and static build | **Passed** |
 
-These are supported by focused operating procedures and a small indexed engineering knowledge base.
+The owner reported a positive initial playtest. The final verification report nevertheless retained separate owner-only checks for a full twenty-level walkthrough, hint quality, screen-reader feel, narrow-phone appearance and sound. These automated results are not a commercial release or a completed human acceptance certificate.
 
-The workbench is intentionally not another server, background daemon, AI gateway or task database. The host does the actual running. GitHub owns commits and PR state. The project owns its product requirements. PAF contributes procedures and context.
+This was a meaningful practical demonstration: a complete small product was developed through a reviewed, sequential programme rather than six unrelated agent prompts. It is **not** a controlled experiment showing that PAF alone caused the result; native Cursor provided the actual coordination.
 
-It also differentiates **one approved slice** from a **finite autonomous programme**. An agent can continue through authorised dependent tasks where the user has explicitly granted that authority, but a Markdown file alone cannot run tasks after the host has stopped.
+### Value beyond the recorded game pilot
 
-### Testing it on a real build: Circuit Lab
+Circuit Lab is the one deliberately documented end-to-end PAF pilot, but it is not the only project where I have used the method.
 
-The most useful evaluation was a separate, intentionally small browser game called **Circuit Lab**, built around rotating circuit components to route power through authored puzzles.
+I've since used PAF's planning contracts and multi-slice development approach on a number of other personal engineering projects. **In day-to-day use, it has substantially streamlined the progression from an agreed idea to coherent implementation work.** Instead of repeatedly reconstructing scope for every agent session, the project documents and implementation stages provide continuity.
 
-The project had a clear 20-level design, a pure simulation engine, negative cases and a dependency-aware build plan. A native Cursor Project acted as the coordinator, with project-scoped PAF guidance available to the implementation and review process.
+That's an important part of the project's value, even though I haven't run a controlled multi-project comparison or calculated a reliable percentage speed-up. It is a practitioner assessment grounded in repeated use, not an invented benchmark.
 
-Across six dependent implementation PRs, the project progressed from four playable levels to a 20-level catalogue, branching circuits, switches, diodes, logic gates, progress persistence, keyboard interaction, narrow-screen layout and opt-in sound.
+### Learning from the real review process
 
-The final documented automated verification reported:
+The pilot also produced concrete lessons that improved the workbench.
 
-- **6** merged implementation PRs;
-- **20** authored levels with executable solution witnesses;
-- **237/237** passing unit tests;
-- **52/52** passing Chromium end-to-end tests;
-- passing typecheck and static build.
+**Review caught genuine defects.** Fresh-context review identified an off-board validation gap, a logic-route problem and a high-severity stored-audio-preference issue. Focused fixes and regression tests followed. Review demonstrated its practical worth by challenging actual behaviour, not by providing ceremony.
 
-Those are observed project results, not a controlled experiment proving PAF caused them. Native Cursor Projects provided the running coordinator. The individual effects of the PAF skills, automatic skill invocation and comparative development cost were not isolated. The owner reported a positive quick playtest, while full 20-level, screen-reader, phone and sound acceptance remained separately open in the final report.
+**Review was not always right.** One agent objected to repeating a branching mechanic in Level 6 even though the accepted design expressly required it. A separate instructional sentence misstated a receiver position and really did need correction. PAF's revised review policy now distinguishes an objective contract defect from an optional design preference, preventing unproductive escalation.
 
-### The best findings came from things that went wrong
+**The final changed code matters.** Certain high/medium-risk repairs passed tests without a separately recorded independent review of the new risky delta. The later procedure recommends inspecting the actual repaired head, the counterexample and affected tests, proportionately rather than re-reviewing everything after each small copy edit.
 
-The pilot was more informative because it was not frictionless.
+**Workflow overhead should be challenged.** Several administrative closeout PRs and stale entrypoint docs created avoidable noise. PAF now emphasises keeping one authoritative task ledger and reconciling current project documentation at sensible programme boundaries.
 
-**Review found real defects.** Fresh-context review identified an off-board validation gap, a logic-route design problem and a high-severity saved-audio-preference issue. Focused corrections and regression tests followed. This was evidence that independent challenges could find useful problems, not a claim that review was infallible.
+**Unobservable costs must remain unknown.** Actual token usage, model routing and PAF-specific cost overhead were not reliably available from GitHub. The method now asks for observable usage rather than inventing savings or attributing an approximate cost to the framework.
 
-**Review also overreached.** One reviewer repeatedly treated an approved Level 6 design as defective because it reused a branching mechanic from Level 5. The actual written contract allowed that design. A separate piece of level-introduction text was genuinely wrong. The distinction mattered: an agent's design preference should not become a blocking requirement simply because it arrives in a review.
+The response to each issue was a contained improvement to existing skills and SOPs, not a new infrastructure layer.
 
-**The final commit matters.** Some repaired medium- and high-severity changes passed tests without a separate final-head review of the risky delta. A green affected suite is not the same thing as a fresh reviewer inspecting the code that will be merged.
+### What the evidence establishes
 
-**Documentation can become overhead.** The build generated several documentation-only closeout PRs, and some entrypoint files still described earlier planning states after the implementation was merged. Process documentation needs to stay aligned with actual GitHub state, without becoming a second project to maintain.
+PAF has two complementary forms of documented positive evidence: a restricted synthetic evaluation demonstrating selected fail-closed checks, and a real six-slice application build demonstrating a functional project-first development workflow.
 
-**Costs were not observable.** The pilot appeared to use more of the chosen low-cost model than expected, but GitHub history could not establish token spend, model routing or cost attributable to PAF. The correct result was **unknown**, not an invented efficiency claim.
+Beyond those records, I regard its planning and staged delivery method as highly valuable in my own work across projects. That experience is legitimate, but it is a different kind of evidence from a measured causal comparison.
 
-These findings prompted narrow policy changes: require contract-grounded review findings, use risk-proportional final-head re-review, avoid repetitive administrative PRs, reconcile project state at programme end and account only for model usage the host actually exposes.
+It would be inaccurate to claim universal agent portability, a known PAF-versus-native-Cursor performance benefit, trustworthy hosted CI for the earlier evaluation, or precise cost savings. **Those are boundaries on the claims, not reasons to discount what the framework already enables.**
 
-### What PAF proved, and what it did not
+### What I've taken from it
 
-PAF has evidence of useful deterministic safety checks and a working skills-led process exercised in a real project. It also demonstrates that a native coordinator can progress through multiple dependent PRs when the plan and owner permissions are explicit.
+The strongest lesson is that autonomy works better when the important decisions have somewhere durable to live.
 
-But important limits remain. The controlled comparison did not quantify a performance or cost improvement over native Cursor. Hosted CI was not available for the framework validation. Cross-tool behaviour with other agents was not established. Automatic skill invocation was not proven in all workspace configurations, and future-agent compliance with the revised review procedures has not been behaviourally regression-tested.
+The developer retains ownership of requirements and material decisions. The repository carries those choices forward. Skills supply relevant technical judgment. Deterministic tools verify what software can actually check. The agent host coordinates approved work. GitHub records what happened, including incomplete evidence.
 
-The strongest conclusion is therefore deliberately bounded: **a controlled, useful engineering workbench with observed benefits and known gaps**, not a universal autonomous development platform.
+PAF is useful because it lets me spend more time thinking about the product and less time acting as a relay between agents. Its evolution has been about **making ambitious AI-assisted engineering easier to direct, review and resume**.
 
-### What I learned
+### Systems Atlas: Inside an Autonomous Build
 
-The most important design lesson was that **more autonomy does not mean fewer boundaries**.
+The accompanying interactive exhibit makes this workflow tangible rather than displaying a conventional agent-flow diagram.
 
-It means moving decisions to the right place. The human defines material product and operational authority. The project repository preserves that authority. Deterministic tools check what can be checked mechanically. AI agents perform implementation and judgment-intensive review. The running host provides coordination. GitHub provides the observable record of what happened.
+Visitors begin with the original Circuit Lab idea, trace a real requirement into specifications and acceptance, inspect the workbench's skills and authority boundaries, travel through six documented implementation slices, and investigate the difference between a genuine defect and an unsupported review preference. The final stage exposes the reported results and their remaining limits.
 
-A second lesson was to avoid confusing process with progress. A framework can be internally consistent while consuming more time than it saves. A reviewer can be diligent yet wrong. A test suite can be green while an external acceptance step remains undone.
-
-The next stage of maturity is not necessarily another framework feature. It is learning, through further real development, which pieces meaningfully improve outcomes and which should be removed.
-
-### Systems Atlas: the exhibit opportunity
-
-The portfolio experience should not present PAF as six boxes connected by arrows.
-
-A stronger interactive exhibit would let visitors investigate a **recorded development episode**: the approved task contract, a PR's actual changes, a review finding, the counterexample, the repair and the remaining acceptance boundary.
-
-A particularly revealing moment would contrast two findings: a genuine high-severity defect that deserves a repair, and a plausible-sounding design preference that conflicts with the accepted spec. The visitor could inspect the evidence and see why the correct decisions differ.
-
-This would make the core idea tangible: the value is not that AI can produce code, but that complex AI-assisted work can be **directed, challenged and verified without pretending uncertainty has disappeared**.
+The interactions are labelled documentary reconstructions and illustrative models. They do not execute live agents, expose private source code or claim to be runtime telemetry.
 
 ---
 
-## Editorial evidence and publication notes (remove from public-facing article)
+## Editorial evidence and publication notes (remove from the public-facing article)
 
-**Status:** Draft case study, prepared through read-only GitHub review on 10 November 2026. No new framework test, live Cursor agent run or Circuit Lab acceptance was performed as part of this writing.
+**Status:** v0.2 editorial draft, reviewed against the selected GitHub source documents on 10 November 2026. No new PAF test, paid agent run, Circuit Lab full owner acceptance or independent benchmarking was conducted for this revision.
 
-**Primary source records** (most source repositories are private; these links are for authorised editorial verification, not public proof):
-- [PAF root README](https://github.com/D4V1DW/agent-framework/blob/main/README.md)
-- [PAF initial architecture/specification](https://github.com/D4V1DW/agent-framework/blob/main/PERSONAL_AI_AGENT_FRAMEWORK_SPEC.md)
-- [Good-enough evaluation and limitations](https://github.com/D4V1DW/agent-framework/blob/main/docs/PAF-GOOD-ENOUGH-RESULTS.md)
-- [Pass A deterministic hardening PR #15](https://github.com/D4V1DW/agent-framework/pull/15)
-- [Planning redesign PR #17](https://github.com/D4V1DW/agent-framework/pull/17)
-- [Skill-first implementation PR #19](https://github.com/D4V1DW/agent-framework/pull/19)
-- [Host validation report](https://github.com/D4V1DW/agent-framework/blob/main/docs/vnext/HOST_VALIDATION.md)
-- [PAF native skills](https://github.com/D4V1DW/agent-framework/tree/main/.agents/skills)
+**Primary private-source records:**
+- [PAF README / implementation status](https://github.com/D4V1DW/agent-framework/blob/main/README.md)
+- [Original PAF architecture/specification](https://github.com/D4V1DW/agent-framework/blob/main/PERSONAL_AI_AGENT_FRAMEWORK_SPEC.md)
+- [Controlled evaluation results](https://github.com/D4V1DW/agent-framework/blob/main/docs/PAF-GOOD-ENOUGH-RESULTS.md) and [Pass A hardening PR #15](https://github.com/D4V1DW/agent-framework/pull/15)
+- [Planning redesign PR #17](https://github.com/D4V1DW/agent-framework/pull/17), [skills-first implementation PR #19](https://github.com/D4V1DW/agent-framework/pull/19) and [post-pilot procedure revision PR #21](https://github.com/D4V1DW/agent-framework/pull/21)
 - [Circuit Lab pilot retrospective](https://github.com/D4V1DW/agent-framework/blob/main/docs/vnext/CIRCUIT_LAB_PILOT_RETROSPECTIVE.md)
-- [Policy refinement PR #21](https://github.com/D4V1DW/agent-framework/pull/21)
-- [Circuit Lab task ledger](https://github.com/D4V1DW/circuit-lab/blob/main/docs/BUILD_PLAN.md)
-- [Circuit Lab MVP verification report](https://github.com/D4V1DW/circuit-lab/blob/1c5060b211fdeed660582965790992408502c43d/docs/MVP_ACCEPTANCE_REPORT.md)
-- Circuit Lab implementation PRs [#3](https://github.com/D4V1DW/circuit-lab/pull/3), [#4](https://github.com/D4V1DW/circuit-lab/pull/4), [#5](https://github.com/D4V1DW/circuit-lab/pull/5), [#7](https://github.com/D4V1DW/circuit-lab/pull/7), [#9](https://github.com/D4V1DW/circuit-lab/pull/9), [#11](https://github.com/D4V1DW/circuit-lab/pull/11).
+- [Circuit Lab build plan](https://github.com/D4V1DW/circuit-lab/blob/main/docs/BUILD_PLAN.md) and [final automated acceptance report](https://github.com/D4V1DW/circuit-lab/blob/1c5060b211fdeed660582965790992408502c43d/docs/MVP_ACCEPTANCE_REPORT.md)
+- Circuit Lab development PRs [#3](https://github.com/D4V1DW/circuit-lab/pull/3), [#4](https://github.com/D4V1DW/circuit-lab/pull/4), [#5](https://github.com/D4V1DW/circuit-lab/pull/5), [#7](https://github.com/D4V1DW/circuit-lab/pull/7), [#9](https://github.com/D4V1DW/circuit-lab/pull/9), [#11](https://github.com/D4V1DW/circuit-lab/pull/11).
 
-**Before publication:**
-1. Confirm precise personal contribution and whether first-person role language is appropriate; no claim that all source was hand-written.
-2. Decide which terms, screenshots and specific numbers from private projects are appropriate to disclose; avoid publishing private source, credentials, internal paths or proprietary work.
-3. Confirm current pilot/host evidence if subsequent agent-framework work adds materially different proof.
-4. Remove editorial notes and private source links, or replace with public-safe evidence.
-5. Make sure any interactive demonstration uses labelled, curated historical evidence or synthetic reconstructions; do not imply it is a live running autonomous agent or independent review where it is not.
+**For owner review before publication:** Confirm exact individual authorship/contribution framing; assess which details and screenshots are appropriate to disclose from private project repositories; verify later source status before public launch; remove this editorial appendix and any private-only links from the visitor-facing edition. The broader project's effectiveness is explicitly owner-reported, not a lab measurement.
