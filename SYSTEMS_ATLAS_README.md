@@ -15,6 +15,13 @@ Systems Atlas is an ambitious, interactive **personal engineering portfolio**, c
 3. [FTT interaction principles 0.3](archive/ftt-interaction-principles-v0.3.md) — interaction research; not the current portfolio information architecture.
 4. [Original creative brief 0.1](archive/creative-brief-v0.1.md) — initial options and constraints.
 
+## Latest design prototype (10 November 2026)
+
+- [**Systems Atlas portfolio revision 04**](prototypes/systems-atlas-portfolio-v04.html) — interactive portfolio-first homepage, all four project previews, a complete FTT chapter drawn from its case-study draft, and a client-only synthetic customer/staff theatre. It is **not** a live FTT integration or final production website.
+- [Revision 04 design review](docs/systems-atlas-design-review-v04.md) — decision rationale, browser interaction checks at four widths, limitations and next creative gates.
+
+**Important:** Revision 04 supersedes the earlier prototypes for creative review. Original probes remain archived unchanged for historical reference. This branch and draft PR remain unmerged and publicly visible.
+
 ## Original HTML experiments
 
 - [Design probe 01](archive/design-probe-01.html): first editorial foundation and simplified order sequence.
