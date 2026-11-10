@@ -2,6 +2,16 @@
 
 **Status:** Exploratory portfolio project. This branch is a **publicly visible draft** of an existing public portfolio repository; it is not deployed, merged or authorised as a final product specification.
 
+## Latest proposed experience — revision 06 (10 November 2026)
+
+**[Open the self-contained HTML prototype](prototypes/systems-atlas-portfolio-v06.html)** · [Design review and verification boundaries](docs/systems-atlas-design-review-v06.md) · [Next-chat handover](docs/systems-atlas-handover-v06.md)
+
+PAF's second exhibit is now **Inside an Autonomous Build**, a six-movement interactive experience. Visitors can move from an idea through a durable requirement/task/test trace, inspect the six native skills and authority boundaries, scrub six recorded Circuit Lab implementation slices, investigate review evidence and examine the bounded outcome. This replaces the shallow three-case Review Room as the **current design proposal**. The previous v0.4 and v0.5 prototypes remain historical, unmerged comparison branches.
+
+The [PAF case study](case-studies/paf/CASE_STUDY_DRAFT.md) has been updated to editorial v0.2, leading with the owner's positive practical experience of the planning/multi-slice workflow across personal projects. The one formally documented end-to-end pilot and known limits remain clearly distinguished.
+
+**Prototype status:** not deployed, not production-certified, not a PAF build authorisation. Source exhibits contain only local/curated illustrative information, not live agent activity, private project source or confidential material. Owner approval and full accessibility/performance review remain outstanding.
+
 ## Purpose
 
 Systems Atlas is an ambitious, interactive **personal engineering portfolio**, centred on the work and professional experience of David Willsher. It must **not** become a For The Table marketing website. FTT is one case study among several and already has its own product website.
