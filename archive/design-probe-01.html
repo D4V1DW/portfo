@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#e8e6dd" />
+<meta name="description" content="Systems Atlas: a visual and interactive design exploration for David Willsher's engineering portfolio." />
+<title>Systems Atlas — Direction 01 | David Willsher</title>
+<style>
+  :root {
+    --paper: #e8e6dd; --chalk: #f6f4eb; --ink: #222b2a; --soft-ink: #4b5550;
+    --line: #bdbeb1; --green: #496d58; --lime: #cbdd9b; --rust: #c26b47;
+    --dark: #172321; --dark-2: #23312e; --white: #f8f8f2;
+    --font-display: Georgia, 'Times New Roman', serif;
+    --font-body: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --page-width: 1500px;
+  }
+  *, *::before, *::after {box-sizing: border-box}
+  html {scroll-behavior: smooth}
+  body {margin:0; color:var(--ink); background:var(--paper); font: 15px/1.55 var(--font-body); -webkit-font-smoothing:antialiased}
+  a {color:inherit; text-decoration:none}
+  button {font:inherit; cursor:pointer}
+  button:focus-visible,a:focus-visible {outline:3px solid var(--rust);outline-offset:4px}
+  .skip {position:fixed;z-index:200;left:20px;top:-100px;background:var(--lime);padding:12px}
+  .skip:focus {top:20px}
+  .texture {background-image: linear-gradient(#344a3b08 1px,transparent 1px),linear-gradient(90deg,#344a3b08 1px,transparent 1px);background-size:40px 40px}
+  .container {width:min(100% - 96px,var(--page-width));margin:auto}
+  .intro-strip {background:var(--dark);color:#d9e0d5;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;display:flex;justify-content:space-between;padding:9px 48px;gap:16px}
+  .intro-strip span:last-child {color:#a9c59f}
+  header {position:relative;z-index:10;border-bottom:1px solid var(--line);background:var(--paper)}
+  .header-inner {height:84px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .brand {display:flex;align-items:center;gap:14px}
+  .brandmark {height:38px;width:38px;background:var(--dark);color:var(--lime);font:24px/38px var(--font-display);text-align:center}
+  .brand-name {font-size:14px;font-weight:750;letter-spacing:-.03em;line-height:1.2}
+  .brand-sub {font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-ink);margin-top:3px}
+  .nav {display:flex;align-items:center;gap:38px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.09em}
+  .nav a:hover {color:var(--green)}
+  .nav .nav-contact {border:1px solid var(--ink);padding:11px 17px;display:flex;align-items:center;gap:12px}
+  .nav .nav-contact:hover {background:var(--dark);color:var(--white)}
+  .arrow {font-size:16px;font-weight:400}
+  .mobile-nav {display:none}
+  .eyebrow {display:flex;align-items:center;gap:14px;text-transform:uppercase;letter-spacing:.18em;font-size:10px;font-weight:700;color:var(--green)}
+  .eyebrow::before {content:'';height:1px;width:30px;background:currentColor}
+  .hero {min-height:690px;display:grid;grid-template-columns:minmax(0,1fr) minmax(400px,.95fr);border-bottom:1px solid var(--line);position:relative}
+  .hero .left {padding:94px 6vw 77px max(48px,calc((100vw - var(--page-width))/2));display:flex;flex-direction:column;align-items:flex-start;position:relative;z-index:2}
+  .hero h1 {font:normal clamp(67px,6.1vw,112px)/.93 var(--font-display);letter-spacing:-.078em;max-width:760px;margin:64px 0 29px}
+  .hero h1 em {font-weight:normal;color:var(--green);letter-spacing:-.073em}
+  .hero-description {font-size:17px;line-height:1.65;max-width:480px;color:#4b5550;margin:0 0 45px}
+  .hero-actions {display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .btn {border:1px solid var(--dark);padding:15px 21px;display:inline-flex;align-items:center;gap:32px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;transition:background .2s,color .2s,transform .2s}
+  .btn:hover {transform:translateY(-2px)}
+  .btn-primary {background:var(--dark);color:var(--chalk)}
+  .btn-primary:hover {background:var(--green)}
+  .btn-ghost {background:transparent;color:var(--dark)}
+  .btn-ghost:hover {background:#d8dcd0}
+  .hero-foot {margin-top:auto;padding-top:50px;display:flex;gap:12px;align-items:center;color:#6e796e;font-size:10px;text-transform:uppercase;letter-spacing:.12em}
+  .hero-foot .vertical-stroke {height:27px;width:1px;background:#708475}
+  .hero-right {overflow:hidden;position:relative;background:#d6dacd;border-left:1px solid var(--line);display:flex;align-items:center;justify-content:center;min-height:660px}
+  .hero-right::before {content:'';position:absolute;inset:0;background-image:linear-gradient(#48685114 1px,transparent 1px),linear-gradient(90deg,#48685114 1px,transparent 1px);background-size:38px 38px}
+  .hero-diagram {position:relative;width:min(94%,740px);aspect-ratio:1;max-height:650px}
+  .hero-diagram svg {position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 9px 12px #24342909)}
+  .hero-figure-index {position:absolute;top:35px;left:34px;font-size:10px;letter-spacing:.18em;color:#536859;text-transform:uppercase}
+  .diagram-note {position:absolute;right:28px;bottom:27px;background:#f5f2e6;border:1px solid #8eaa9c;padding:16px 20px;max-width:280px;box-shadow:6px 6px 0 #3e66531d}
+  .diagram-note .num {font:normal 30px/1 var(--font-display);color:var(--green)}
+  .diagram-note p {font-size:11px;line-height:1.5;margin:6px 0 0;color:#4b5b50}
+  .ring {transform-origin:50% 50%;animation:rotate 70s linear infinite}
+  .ring.inverse {animation-direction:reverse;animation-duration:95s}
+  .pulse {animation:glow 3.2s ease-in-out infinite}
+  @keyframes rotate {to {transform:rotate(360deg)}}
+  @keyframes glow {0%,100% {opacity:.45}50% {opacity:1}}
+  .section-topline {display:flex;align-items:center;justify-content:space-between;padding:23px 0;border-bottom:1px solid var(--line);font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:var(--soft-ink)}
+  .section-topline strong {color:var(--ink);font-weight:800}
+  .intro {padding:112px 0 108px;display:grid;grid-template-columns:.65fr 1.35fr;gap:8vw}
+  .intro-label {font-size:12px;text-transform:uppercase;letter-spacing:.13em;font-weight:700;color:var(--green)}
+  .intro-quote {font:normal clamp(35px,4.2vw,66px)/1.12 var(--font-display);letter-spacing:-.055em;margin:0}
+  .intro-quote em {color:var(--green)}
+  .intro-copy {font-size:15px;color:var(--soft-ink);line-height:1.75;max-width:720px;margin-top:28px}
+  .exhibit {background:var(--dark);color:var(--white);padding-bottom:95px;position:relative;overflow:hidden}
+  .exhibit::before {content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 78% 45%,#36554647,transparent 48%);pointer-events:none}
+  .exhibit .section-topline {border-color:#4b5b50;color:#aabcb0;position:relative}
+  .exhibit .section-topline strong {color:#e0e8da}
+  .exhibit-head {padding:105px 0 70px;display:grid;grid-template-columns:1fr .7fr;align-items:end;gap:55px;position:relative}
+  .exhibit-head h2 {font:normal clamp(55px,6vw,98px)/.96 var(--font-display);letter-spacing:-.069em;margin:23px 0 0}
+  .exhibit-head h2 em {color:var(--lime)}
+  .exhibit-head p {color:#b4c5b6;font-size:15px;line-height:1.75;max-width:435px;margin:0 0 7px}
+  .exhibit-shell {position:relative;border:1px solid #648071;background:#21322d;display:grid;grid-template-columns:minmax(0,1.42fr) minmax(280px,.58fr);min-height:590px;box-shadow:16px 16px 0 #101b1990}
+  .exhibit-graph {position:relative;min-width:0;padding:24px 26px 22px;background-image:linear-gradient(#e7f0da09 1px,transparent 1px),linear-gradient(90deg,#e7f0da09 1px,transparent 1px);background-size:29px 29px}
+  .exhibit-minihead {display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #577164;padding-bottom:17px;font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#a4c7ae}
+  .sim-indicator {display:flex;align-items:center;gap:9px;color:#d7e6d0}
+  .sim-indicator::before {content:'';height:7px;width:7px;border:1px solid #c9d8a0;border-radius:50%}
+  .system-diagram {padding:20px 0 12px;min-height:402px;display:flex;align-items:center;justify-content:center}
+  .system-diagram svg {width:100%;height:auto;max-height:410px;overflow:visible}
+  .sim-node {fill:#293c34;stroke:#8ca698;stroke-width:1.1;transition:fill .2s,stroke .2s}
+  .sim-node.active {fill:#4f7457;stroke:#ddeda3;stroke-width:2.3}
+  .sim-node.complete {fill:#365c4b;stroke:#9bbf90}
+  .diagram-head {fill:#f3f3e6;font:700 12px var(--font-body);letter-spacing:1px}
+  .diagram-sub {fill:#bed0c2;font:10.5px var(--font-body)}
+  .diagram-path {stroke:#83978d;stroke-width:1.5;fill:none;stroke-dasharray:6 5;transition:stroke .2s}
+  .trace-dot {fill:#e0e8ab;opacity:0;transition:opacity .25s}
+  .tracing .trace-dot {opacity:1}
+  .graph-caption {font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#a8bfad;border-top:1px solid #577164;padding-top:16px;display:flex;justify-content:space-between;gap:15px}
+  .graph-caption .tag {color:#deedac}
+  .inspector {border-left:1px solid #648071;background:#e6e8d9;color:var(--dark);display:flex;flex-direction:column;min-width:0}
+  .inspector-head {padding:22px 24px 15px;border-bottom:1px solid #a3b7a3;font-size:10px;letter-spacing:.14em;text-transform:uppercase;display:flex;justify-content:space-between;gap:8px}
+  .inspector-body {padding:36px 26px 23px;flex:1}
+  .inspector-index {font:normal 64px/1 var(--font-display);letter-spacing:-.08em;color:var(--green)}
+  .inspector h3 {font:normal 27px/1.1 var(--font-display);letter-spacing:-.035em;margin:21px 0 16px}
+  .inspector p {font-size:13px;line-height:1.67;color:#55645b;margin:0 0 20px}
+  .inspector .mini-rule {height:1px;background:#b3c1b2;margin:27px 0 20px}
+  .inspector dl {display:grid;grid-template-columns:1fr 1fr;margin:0;row-gap:10px;font-size:11px}
+  .inspector dt {color:#718274;text-transform:uppercase;letter-spacing:.08em}
+  .inspector dd {margin:0;text-align:right;font-weight:700}
+  .controls {padding:20px 23px;border-top:1px solid #a3b7a3;display:grid;gap:10px}
+  .button-row {display:flex;gap:8px}
+  .control-btn {background:#203b30;color:#f3f3e6;border:1px solid #203b30;padding:12px 13px;font-size:11px;text-transform:uppercase;font-weight:800;letter-spacing:.08em;flex:1}
+  .control-btn:hover {background:#496d58}
+  .control-btn:disabled {opacity:.38;cursor:not-allowed}
+  .control-btn.secondary {background:transparent;color:#21392e;border:1px solid #6a8573;flex:0 0 auto;padding-inline:15px}
+  .control-btn.secondary:hover {background:#cbd7c5}
+  .controls .small {font-size:10px;color:#506352;line-height:1.4}
+  .timeline {display:flex;align-items:center;gap:10px;padding:24px 0 0;position:relative}
+  .step {border:1px solid #5a7768;background:transparent;color:#9eb7a8;display:flex;flex:1;align-items:center;gap:8px;text-align:left;padding:11px 12px;font-size:10px;font-weight:700;letter-spacing:.04em;transition:background .2s}
+  .step .step-id {font:normal 18px var(--font-display);color:#b8cab7}
+  .step.active {background:#d3e6a6;border-color:#d3e6a6;color:#23362b}
+  .step.active .step-id {color:#385747}
+  .step.completed {background:#355545;color:#e4efde}
+  .exhibit-foot {padding-top:53px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;position:relative}
+  .fact {border-top:1px solid #4e6858;padding-top:21px}
+  .fact .number {font:normal 36px var(--font-display);letter-spacing:-.05em;color:#e6ebd9}
+  .fact .label {margin-top:7px;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#b5c9b9}
+  .fact p {margin:9px 0 0;max-width:300px;font-size:12px;color:#a7b9ab}
+  .index {padding-bottom:125px}
+  .index-top {padding:100px 0 40px;display:flex;justify-content:space-between;align-items:end;gap:30px}
+  .index h2 {font:normal clamp(52px,5.3vw,83px)/1 var(--font-display);letter-spacing:-.065em;margin:17px 0 0}
+  .index-desc {font-size:13px;max-width:335px;color:#58685d;line-height:1.6}
+  .project-list {border-top:1px solid var(--line)}
+  .project {display:grid;grid-template-columns:67px 1fr 210px 48px;gap:18px;align-items:center;min-height:134px;border-bottom:1px solid var(--line);transition:background .2s;padding:16px 12px}
+  .project:hover {background:#d9decf}
+  .project .no {font:italic 22px var(--font-display);color:var(--green)}
+  .project h3 {font:normal clamp(29px,3.4vw,48px)/1.05 var(--font-display);letter-spacing:-.055em;margin:0}
+  .project .type {color:#55705e;font-size:11px;text-transform:uppercase;letter-spacing:.13em;font-weight:700}
+  .project .icon {font-size:28px;text-align:center}
+  .project .status {font-size:10px;color:#708075;letter-spacing:.08em;text-transform:uppercase;margin-top:8px}
+  .closing {padding:100px 0;background:#d6dacd;border-top:1px solid var(--line)}
+  .closing-grid {display:grid;grid-template-columns:1fr .8fr;gap:80px;align-items:end}
+  .closing h2 {font:normal clamp(44px,5vw,76px)/1.04 var(--font-display);letter-spacing:-.06em;margin:24px 0 0}
+  .closing p {font-size:15px;line-height:1.75;color:#4c6352;margin:0}
+  footer {background:var(--dark);color:#dbe3d9;padding:26px 0}
+  .footer-inner {display:flex;gap:18px;justify-content:space-between;font-size:10px;text-transform:uppercase;letter-spacing:.11em;align-items:center}
+  .footer-note {color:#a6beab}
+  .sr-only {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  @media (max-width:1050px){
+    .hero {grid-template-columns:1fr .83fr;min-height:640px}
+    .hero .left {padding-left:48px;padding-top:78px}
+    .hero h1 {font-size:clamp(66px,6vw,90px)}
+    .hero-right {min-height:615px}
+    .container {width:calc(100% - 80px)}
+    .exhibit-shell {grid-template-columns:minmax(0,1.3fr) minmax(245px,.65fr)}
+    .exhibit-graph {padding:20px 16px}
+    .inspector-body {padding:27px 22px}
+    .step {font-size:9px;padding:10px 7px}
+    .step .step-id {font-size:14px}
+  }
+  @media (max-width:760px){
+    .intro-strip {padding-inline:22px;font-size:9px}
+    .intro-strip span:last-child{display:none}
+    .container {width:calc(100% - 44px)}
+    .header-inner {height:70px}
+    .nav {display:none}
+    .mobile-nav {display:flex;gap:18px;font-size:11px;font-weight:700;text-transform:uppercase}
+    .hero {grid-template-columns:1fr}
+    .hero .left {padding:68px 22px 48px;min-height:555px}
+    .hero h1 {font-size:clamp(67px,11.5vw,93px);margin-top:55px}
+    .hero-description {font-size:16px}
+    .hero-right {min-height:450px;border-top:1px solid var(--line);border-left:none}
+    .hero-diagram {width:min(86%,480px);max-height:480px}
+    .diagram-note {right:18px;bottom:17px;max-width:190px;padding:10px 12px}
+    .diagram-note .num {font-size:24px}
+    .diagram-note p {font-size:9px}
+    .intro {padding:75px 0;grid-template-columns:1fr;gap:24px}
+    .intro-quote {font-size:clamp(37px,8vw,57px)}
+    .intro-copy {font-size:14px}
+    .exhibit-head {padding:65px 0 45px;grid-template-columns:1fr;gap:25px}
+    .exhibit-head h2 {font-size:clamp(62px,10vw,78px)}
+    .exhibit-head p {font-size:14px}
+    .exhibit-shell {grid-template-columns:1fr}
+    .exhibit-graph {padding:20px 15px}
+    .system-diagram {min-height:260px}
+    .inspector {border-left:none;border-top:1px solid #648071}
+    .inspector-body {padding:21px 22px}
+    .inspector-index {font-size:43px}
+    .inspector h3 {margin:12px 0 9px}
+    .inspector p {margin-bottom:10px}
+    .inspector .mini-rule {margin:15px 0 12px}
+    .controls {padding:15px 22px}
+    .timeline {flex-wrap:wrap;gap:6px}
+    .step {flex:1 0 calc(33.333% - 6px)}
+    .exhibit-foot {grid-template-columns:1fr;gap:23px;padding-top:36px}
+    .fact {padding-top:12px}
+    .fact p {max-width:100%}
+    .index-top {padding-top:65px;display:block}
+    .index-desc {margin-top:15px}
+    .project {grid-template-columns:40px 1fr 26px;gap:9px;min-height:117px}
+    .project h3 {font-size:clamp(29px,6vw,42px)}
+    .project .type {display:none}
+    .closing {padding:70px 0}
+    .closing-grid {grid-template-columns:1fr;gap:25px}
+    .footer-inner {flex-direction:column;align-items:flex-start}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html {scroll-behavior:auto}
+    *,*::before,*::after {animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to content</a>
+<div class="intro-strip"><span>Systems Atlas / Design exploration 01</span><span>Concept prototype — not a launched portfolio</span></div>
+<header>
+  <div class="container header-inner">
+    <a href="#top" class="brand" aria-label="David Willsher, back to top">
+      <div class="brandmark" aria-hidden="true">W</div>
+      <div><div class="brand-name">DAVID WILLSHER</div><div class="brand-sub">Systems / Data / Applied AI</div></div>
+    </a>
+    <nav class="nav" aria-label="Primary navigation"><a href="#about">Perspective</a><a href="#work">Selected work</a><a href="#exhibit">Explore system</a><a href="mailto:dwillsher90@gmail.com" class="nav-contact">Contact <span class="arrow" aria-hidden="true">↗</span></a></nav>
+    <nav class="mobile-nav" aria-label="Mobile navigation"><a href="#work">Work</a><a href="#exhibit">Explore</a></nav>
+  </div>
+</header>
+<main id="main">
+<section class="hero" id="top" aria-labelledby="main-title">
+  <div class="left">
+    <div class="eyebrow">An atlas of engineered systems</div>
+    <h1 id="main-title">Ideas are easy.<br><em>Systems are<br>the work.</em></h1>
+    <p class="hero-description">Exploring how ambiguous ideas become useful software. An interactive record of architecture, applied AI, difficult decisions and what actually worked.</p>
+    <div class="hero-actions"><a href="#exhibit" class="btn btn-primary">Enter the first exhibit <span class="arrow" aria-hidden="true">↘</span></a><a href="#work" class="btn btn-ghost">Browse the atlas <span class="arrow" aria-hidden="true">→</span></a></div>
+    <div class="hero-foot"><span class="vertical-stroke" aria-hidden="true"></span><span>Explore the thinking behind the build</span></div>
+  </div>
+  <div class="hero-right" aria-label="Abstract illustrated atlas of interconnected systems">
+    <div class="hero-figure-index">Plate 001 / From intent to system</div>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 620 620" role="img" aria-label="Original architectural diagram connecting intent, constraints, architecture and evidence into a single engineered system">
+        <circle cx="310" cy="310" r="245" fill="none" stroke="#759180" stroke-width="1" />
+        <circle cx="310" cy="310" r="197" fill="none" stroke="#769b87" stroke-width="1.1" stroke-dasharray="3 7" class="ring" />
+        <circle cx="310" cy="310" r="133" fill="#dae1d0" fill-opacity=".55" stroke="#6a8b75" stroke-width="1.2" />
+        <circle cx="310" cy="310" r="86" fill="none" stroke="#4e6f5b" stroke-width="1.1" stroke-dasharray="16 7 2 7" class="ring inverse" />
+        <circle cx="310" cy="310" r="31" fill="#355b48" />
+        <circle cx="310" cy="310" r="16" fill="#d4e4a1" />
+        <g fill="none" stroke="#5b8270" stroke-width="1.2">
+          <path d="M310 279 L310 76 M340 310 H560 M310 342 L310 554 M278 310 H60"/>
+          <path d="M310 310 L466 153 L520 100 M310 310 L466 467 L520 522 M310 310 L154 467 L89 520 M310 310 L154 153 L98 96" stroke-dasharray="3 5"/>
+        </g>
+        <g fill="none" stroke="#52735f" stroke-width="1">
+          <rect x="240" y="32" width="140" height="53"/><rect x="474" y="274" width="130" height="72"/><rect x="240" y="534" width="140" height="53"/><rect x="18" y="274" width="128" height="72"/>
+        </g>
+        <g font-family="Segoe UI, Arial, sans-serif" font-weight="700" letter-spacing="1.1" font-size="12" fill="#2b4c3b" text-anchor="middle">
+          <text x="310" y="53">PROBLEM</text><text x="310" y="69" font-size="9" font-weight="400">what matters</text>
+          <text x="539" y="302">DESIGN</text><text x="539" y="320" font-size="9" font-weight="400">what connects</text>
+          <text x="310" y="556">EVIDENCE</text><text x="310" y="572" font-size="9" font-weight="400">what is proven</text>
+          <text x="82" y="302">DELIVERY</text><text x="82" y="320" font-size="9" font-weight="400">what works</text>
+        </g>
+        <g fill="#bb724d" stroke="#f0eedf" stroke-width="2">
+          <circle cx="310" cy="76" r="6"/><circle cx="560" cy="310" r="6"/><circle cx="310" cy="554" r="6"/><circle cx="60" cy="310" r="6"/>
+        </g>
+        <g fill="#45765d" class="pulse"><circle cx="466" cy="153" r="5"/><circle cx="154" cy="467" r="5"/></g>
+        <text x="310" y="389" text-anchor="middle" fill="#2b5742" font-size="10" font-family="Segoe UI, Arial" letter-spacing="2">THE SYSTEM</text>
+        <text x="140" y="210" fill="#4a6a57" font-size="10" font-family="Segoe UI, Arial" transform="rotate(-36 140 210)">TRACEABLE DECISIONS</text>
+        <text x="394" y="427" fill="#4a6a57" font-size="10" font-family="Segoe UI, Arial" transform="rotate(-36 394 427)">REAL CONSTRAINTS</text>
+      </svg>
+    </div>
+    <div class="diagram-note"><div class="num">04<span style="font:13px var(--font-body)"> / disciplines</span></div><p>Problems, architecture, delivery and evidence. A system is the connection between them.</p></div>
+  </div>
+</section>
+<section class="container" id="about">
+  <div class="section-topline"><strong>00 / Perspective</strong><span>Engineering as a way of thinking</span></div>
+  <div class="intro">
+    <div class="intro-label">Beyond the interface</div>
+    <div><p class="intro-quote">The interesting part isn't just <em>what was built.</em> It's why the system looks the way it does.</p><p class="intro-copy">I work across analytics engineering, software solutions and applied AI. These exhibits make the work inspectable: the problem, the design decisions, the constraints, the verification and the unfinished edges. No manufactured production claims. No complexity for its own sake.</p></div>
+  </div>
+</section>
+<section class="exhibit" id="exhibit" aria-labelledby="exhibit-title">
+  <div class="container">
+    <div class="section-topline"><strong>01 / Featured exhibit</strong><span>For The Table · Multi-tenant SaaS</span></div>
+    <div class="exhibit-head"><div><div class="eyebrow" style="color:var(--lime)">From the experience to the architecture</div><h2 id="exhibit-title">One table.<br><em>Many venues.</em></h2></div><p>What begins as a simple order at a pub table becomes a question of isolation, operational state and repeatable onboarding. Explore a simplified, synthetic trace through the system.</p></div>
+    <div class="exhibit-shell">
+      <div class="exhibit-graph">
+        <div class="exhibit-minihead"><span>Figure 1A / Request and fulfilment path</span><span class="sim-indicator">Deterministic simulation</span></div>
+        <div class="system-diagram" id="systemDiagram">
+          <svg viewBox="0 0 700 390" role="img" aria-label="Schematic showing customer interface, tenant-aware Node API, shared PostgreSQL and venue operations. Active simulation node is highlighted.">
+            <defs><pattern id="databasePattern" width="9" height="9" patternUnits="userSpaceOnUse"><path d="M0 9 L9 0" stroke="#b0cbaa" stroke-width=".45" opacity=".35" /></pattern></defs>
+            <text x="16" y="26" fill="#aac6af" font-size="11" letter-spacing="1.4" font-family="Segoe UI, Arial">VENUE A / TABLE 14</text>
+            <text x="684" y="26" fill="#aac6af" font-size="11" letter-spacing="1.4" text-anchor="end" font-family="Segoe UI, Arial">SYNTHETIC ORDER · #A-014</text>
+            <path id="line1" d="M174 119 H260" class="diagram-path"/><path id="line2" d="M439 119 H526" class="diagram-path"/>
+            <path id="line3" d="M350 153 V256" class="diagram-path"/><path d="M610 153 V257 H437" class="diagram-path"/><path d="M174 296 H263" class="diagram-path"/>
+            <g>
+              <rect id="node-customer" class="sim-node" x="20" y="77" width="154" height="84" rx="3"/>
+              <text x="38" y="113" class="diagram-head">CUSTOMER</text><text x="38" y="134" class="diagram-sub">React interface</text>
+              <rect id="node-api" class="sim-node" x="260" y="77" width="179" height="84" rx="3"/>
+              <text x="279" y="113" class="diagram-head">APPLICATION API</text><text x="279" y="134" class="diagram-sub">Auth · tenant scope</text>
+              <rect id="node-venue" class="sim-node" x="526" y="77" width="154" height="84" rx="3"/>
+              <text x="543" y="113" class="diagram-head">VENUE UI</text><text x="543" y="134" class="diagram-sub">Staff workflow</text>
+              <rect id="node-db" class="sim-node" x="263" y="255" width="174" height="80" rx="3"/>
+              <rect x="272" y="264" width="156" height="62" fill="url(#databasePattern)" pointer-events="none"/>
+              <text x="289" y="292" class="diagram-head">POSTGRESQL</text><text x="289" y="311" class="diagram-sub">Shared authoritative data</text>
+            </g>
+            <g font-family="Segoe UI, Arial" fill="#9fb9a7" font-size="10" letter-spacing=".7"><text x="205" y="106">REQUEST</text><text x="470" y="106">STATE</text><text x="364" y="204">WRITE</text><text x="471" y="274">READ</text></g>
+            <g id="indicator" class="tracing"><circle id="traceDot" class="trace-dot" cx="93" cy="71" r="8"/><circle id="traceHalo" class="trace-dot" cx="93" cy="71" r="16" opacity=".15" fill="none" stroke="#e0e8ab" stroke-width="1.4"/></g>
+            <path d="M20 361 H680" stroke="#5f7966" stroke-width="1"/><text x="20" y="380" fill="#8cab99" font-size="10" font-family="Segoe UI, Arial" letter-spacing="1.1">SIMULATED EVENTS / NOT CONNECTED TO PRODUCTION</text>
+          </svg>
+        </div>
+        <div class="graph-caption"><span>Mode: <span class="tag" id="graphState">Ready</span></span><span>Actual implementation: React → Node/Express → PostgreSQL</span></div>
+      </div>
+      <aside class="inspector" aria-label="Simulation inspector">
+        <div class="inspector-head"><span>Inspector / Event detail</span><span>FTT: 01</span></div>
+        <div class="inspector-body" aria-live="polite" aria-atomic="true">
+          <div class="inspector-index" id="inspectNumber">00</div>
+          <h3 id="inspectTitle">Explore an order.</h3>
+          <p id="inspectBody">Advance a synthetic order through the conceptual customer, API, database and venue boundaries. The highlighted component changes with each step.</p>
+          <div class="mini-rule"></div>
+          <dl><dt>Scenario</dt><dd>Venue A · Table 14</dd><dt>Execution</dt><dd id="inspectStatus">Not started</dd><dt>Evidence</dt><dd id="inspectEvidence">Illustrative</dd></dl>
+        </div>
+        <div class="controls">
+          <div class="button-row"><button class="control-btn" type="button" id="advance">Start the trace <span aria-hidden="true">→</span></button><button class="control-btn secondary" type="button" id="reset">Reset</button></div>
+          <div class="small">No live orders, API calls or personal data. This exhibit illustrates an architecture; it does not prove the security boundary.</div>
+        </div>
+      </aside>
+    </div>
+    <div class="timeline" id="stepList" aria-label="Simulation stages">
+      <button class="step active" type="button" data-index="0" aria-current="step"><span class="step-id">00</span><span>Ready</span></button>
+      <button class="step" type="button" data-index="1"><span class="step-id">01</span><span>Order</span></button>
+      <button class="step" type="button" data-index="2"><span class="step-id">02</span><span>Scope</span></button>
+      <button class="step" type="button" data-index="3"><span class="step-id">03</span><span>Persist</span></button>
+      <button class="step" type="button" data-index="4"><span class="step-id">04</span><span>Fulfil</span></button>
+      <button class="step" type="button" data-index="5"><span class="step-id">05</span><span>Update</span></button>
+    </div>
+    <div class="exhibit-foot">
+      <div class="fact"><div class="number">01 / Real application</div><div class="label">Product architecture</div><p>Multi-venue React application, Node/Express API and shared PostgreSQL with tenant-boundary controls.</p></div>
+      <div class="fact"><div class="number">02 / Tested workflow</div><div class="label">Repository-recorded evidence</div><p>Hosted synthetic operational rehearsal accepted in September 2026. Not independently rerun for this visual concept.</p></div>
+      <div class="fact"><div class="number">03 / Not claimed</div><div class="label">Commercial status</div><p>No real customer launch or commercial traction is implied. External launch gates remain outside this exhibit.</p></div>
+    </div>
+  </div>
+</section>
+<section class="index container" id="work">
+  <div class="section-topline"><strong>02 / Selected work</strong><span>Four systems / Four kinds of problems</span></div>
+  <div class="index-top"><h2>Selected <em style="color:var(--green)">work.</em></h2><div class="index-desc">Each project will become an authored technical exhibit: the story, the system and the evidence. The first exhibit above is a design demonstration.</div></div>
+  <div class="project-list">
+    <a class="project" href="#exhibit"><span class="no">I.</span><div><h3>For The Table</h3><div class="status">First interactive exhibit · Concept ready</div></div><span class="type">SaaS architecture</span><span class="icon" aria-hidden="true">↗</span></a>
+    <div class="project"><span class="no">II.</span><div><h3>AXIOM</h3><div class="status">Exhibit planned</div></div><span class="type">Context-aware AI</span><span class="icon" aria-hidden="true">·</span></div>
+    <div class="project"><span class="no">III.</span><div><h3>Birria Radar</h3><div class="status">Active development · Case study later</div></div><span class="type">AI research workflows</span><span class="icon" aria-hidden="true">·</span></div>
+    <div class="project"><span class="no">IV.</span><div><h3>PAF</h3><div class="status">Exhibit planned</div></div><span class="type">Agent engineering</span><span class="icon" aria-hidden="true">·</span></div>
+  </div>
+</section>
+<section class="closing" id="method"><div class="container closing-grid"><div><div class="eyebrow">A note on the method</div><h2>Make the complex <em style="color:var(--green)">legible.</em></h2></div><p>The final portfolio will document its own engineering, including the role of AI-assisted development, its accessibility and performance, and the difference between a synthetic simulation and independently verified software behaviour.</p></div></section>
+</main>
+<footer><div class="container footer-inner"><span>David Willsher / Systems Atlas</span><span class="footer-note">Design concept 01 · No analytics, external fonts or live APIs</span><a href="mailto:dwillsher90@gmail.com">Get in touch ↗</a></div></footer>
+<script>
+(() => {
+  'use strict';
+  const steps = [
+    {title:'Explore an order.', body:'Advance a synthetic order through the conceptual customer, API, database and venue boundaries. The highlighted component changes with each step.',status:'Not started',evidence:'Illustrative',node:null,dot:[93,71]},
+    {title:'The customer creates an order.', body:'The customer interface submits a synthetic order from Venue A, Table 14. No card details or customer identity are involved in this diagram.',status:'Order composed',evidence:'Simulated event',node:'node-customer',dot:[94,71]},
+    {title:'The service resolves the boundary.', body:'The Node/Express API handles the request in its authenticated or authorised session context and applies venue-scoping rules before changes to authoritative state. The visual is not a penetration test.',status:'Scope checked',evidence:'Architectural model',node:'node-api',dot:[349,71]},
+    {title:'One database, many tenants.', body:'The order is represented as a venue-scoped record in shared PostgreSQL. Real FTT controls and tests are separate evidence, not established by this animation.',status:'Record persisted',evidence:'Simulated write',node:'node-db',dot:[350,250]},
+    {title:'The venue moves the order.', body:'The venue staff interface sees the synthetic order and advances fulfilment state. The display follows the intended event sequence, not live hosted data.',status:'Fulfilment advanced',evidence:'Simulated action',node:'node-venue',dot:[610,71]},
+    {title:'The customer sees progress.', body:'The synthetic customer view converges on the updated order status. The hosted operational rehearsal recorded this behaviour for the actual product, subject to its stated scope.',status:'Trace complete',evidence:'Rehearsal recorded',node:'node-customer',dot:[94,71]},
+  ];
+  let current=0;
+  const $=id=>document.getElementById(id);
+  const timeline=[...document.querySelectorAll('[data-index]')];
+  const nodes=['node-customer','node-api','node-db','node-venue'];
+  function render(index){
+    current=index;
+    const s=steps[current];
+    $('inspectNumber').textContent=String(current).padStart(2,'0');
+    $('inspectTitle').textContent=s.title;
+    $('inspectBody').textContent=s.body;
+    $('inspectStatus').textContent=s.status;
+    $('inspectEvidence').textContent=s.evidence;
+    $('graphState').textContent=current===0?'Ready':current===5?'Trace complete':`Event ${current} of 5`;
+    $('advance').innerHTML=current===0?'Start the trace <span aria-hidden="true">→</span>':current===5?'Replay trace <span aria-hidden="true">↺</span>':'Next event <span aria-hidden="true">→</span>';
+    for(const id of nodes){const el=$(id);el.classList.toggle('active',id===s.node);el.classList.toggle('complete',id!==s.node&&current>0&&steps.slice(1,current).some(a=>a.node===id));}
+    $('traceDot').setAttribute('cx',s.dot[0]);$('traceDot').setAttribute('cy',s.dot[1]);
+    $('traceHalo').setAttribute('cx',s.dot[0]);$('traceHalo').setAttribute('cy',s.dot[1]);
+    $('indicator').classList.toggle('tracing',current>0);
+    for(const b of timeline){const value=Number(b.dataset.index);b.classList.toggle('active',value===current);b.classList.toggle('completed',value<current);if(value===current)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');}
+  }
+  $('advance').addEventListener('click',()=>render(current>=5?1:current+1));
+  $('reset').addEventListener('click',()=>render(0));
+  for(const b of timeline){b.addEventListener('click',()=>render(Number(b.dataset.index)));}
+  render(0);
+})();
+</script>
+</body>
+</html>
