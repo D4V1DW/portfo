@@ -2,7 +2,17 @@
 
 **Status:** Exploratory portfolio project. This branch is a **publicly visible draft** of an existing public portfolio repository; it is not deployed, merged or authorised as a final product specification.
 
-## Latest proposed experience — revision 06 (10 November 2026)
+## Current design proposal — v0.7 (10 November 2026)
+
+**[Open portfolio prototype v0.7](prototypes/systems-atlas-portfolio-v07.html)** · [Design review and evidence](docs/systems-atlas-design-review-v07.md) · [Handover](docs/systems-atlas-handover-v07.md)
+
+The PAF chapter has been redesigned after the owner found v0.6 visually interesting but **confusing to navigate**, and Circuit Lab too small to reflect PAF's real-world usefulness. Revision 07 replaces the six-stage game navigation with a readable **Define → Plan → Build → Verify** narrative about the substantial **Birria Radar Discovery Integration** programme. Its one main interactive element is a four-slice explorer with DI-01–04 evidence, clear dependent architecture and local verification boundaries.
+
+The [PAF case study](case-studies/paf/CASE_STUDY_DRAFT.md) is now editorial **v0.3**: Birria Radar is the flagship, wider workflow adoption is owner-reported qualitative evidence, and Circuit Lab is the supporting dedicated pilot. It is not a productivity benchmark or claim of provider/owner acceptance.
+
+The homepage, FTT exhibit, design language and other project previews remain. Prior versions v0.4–v0.6 are preserved as historical design probes. This revision is a **publicly visible draft**, not a live deployment or final publication. Owner authorship and public-safe claim review still pending.
+
+## Previous design exploration — revision 06 (10 November 2026)
 
 **[Open the self-contained HTML prototype](prototypes/systems-atlas-portfolio-v06.html)** · [Design review and verification boundaries](docs/systems-atlas-design-review-v06.md) · [Next-chat handover](docs/systems-atlas-handover-v06.md)
 
